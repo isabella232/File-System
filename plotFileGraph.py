@@ -1,17 +1,83 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import pygraphviz
+from collections import defaultdict
 
+class Graph():
+    def __init__(self):
+        #empty defaultDict
+        #empty valuemap dicitonary
+        self.edges = defaultdict(list)
+        self.val_map = {}
+
+    #adds an edge to the graph
+    def add_edge(self, from_node, to_node):
+        self.edges[from_node].append(to_node)
+
+    #adds the value map
+    def add_val_map(self, val_map):
+        self.val_map = val_map
+
+    def print_ordered_file_structure(self, start):
+        # Mark all the vertices as not visited 
+        visited = defaultdict(bool)
+  
+        # Create a stack for BFS 
+        stack = [] 
+  
+        # Mark the source node as  
+        # visited and remove it 
+        stack.append(start) 
+        visited[start] = True
+  
+        while stack: 
+            # Dequeue a vertex from  
+            # queue and print it 
+            start = stack.pop() 
+            f = open("output.txt", "a")
+            f.write(start+'. ' + self.val_map[start] + '\n')
+            f.close()
+            #print (start+'. ', self.val_map[start]) 
+            # Get all adjacent vertices of the 
+            # removed vertex s. If a adjacent 
+            # has not been visited, then mark it 
+            # visited and append it
+            # makes a list, sorts it, and reverses it
+            # so it can be printed in order
+            lst = self.edges[start]
+            lst.sort()
+            lst = lst[::-1]
+            for j in lst:
+                if visited[j] == False: 
+                    stack.append(j) 
+                    visited[j] = True
+            
+
+#reads the file
+#parameters: list of edges, dictionary of nodes and values
 def readFile(edges, val_map):
-    readFile = open("textOutline.txt", "r")
+    
+    #opens the file for reading
+    readFile = open("textOutlineOmit.txt", "r")
+
+    #for every line extract the edge and the value
     for line in readFile:
         dirAndVal = line.split(". ")
         dirAndVal[1] = dirAndVal[1].strip()
+
+        #checks that it is not "0"
         if(dirAndVal[0] != "0"):
             aTuple = (dirAndVal[0][:-1], dirAndVal[0])
             edges.append(aTuple)
         val_map[dirAndVal[0]] = dirAndVal[1]
 
+    #closes the file
+    readFile.close()
+
+#draws the graph using networkx
 def drawGraph(G, val_map):
+
+    #uses this funciton to generate the pos
     pos = hierarchy_pos(G,"0")
     nx.draw(G, pos = pos, with_labels=False)
     nx.draw_networkx_labels(G, pos, val_map, 4)
@@ -68,11 +134,28 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
     return _hierarchy_pos(G, root, width, vert_gap, vert_loc, xcenter)
         
 def main():
+    #empty list for edges
     edges = []
+    #empty dictionary for value map
     val_map = {}
+    #reads the file
     readFile(edges, val_map)
+
+    #displaying the graph with networkx
     G = nx.DiGraph()
     G.add_edges_from(edges)
-    drawGraph(G, val_map);
+    drawGraph(G, val_map)
+
+    #printing the contents in order
+    #initializes graph object
+    #adds the edges one by one
+    #adds the val_map
+    #prints the structure similar to
+    # the input file
+    G2 = Graph()
+    for edge in edges:
+        G2.add_edge(*edge)
+    G2.add_val_map(val_map)
+    G2.print_ordered_file_structure("0")
     
 main()
