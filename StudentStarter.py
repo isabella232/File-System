@@ -1,11 +1,19 @@
-import #TO-DO
-import #TO-DO
+import networkx as nx
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
-def readFile(edges, val_map):
-# TO-DO
+#TODO for part 2
+#create your own graph object
+class Graph():
+    def __init__(self):
+        #define graph attributes
 
-def drawGraph(G, val_map):
-    # TO-DO
+            
+
+#provided method
+#will help in displaying with networkx
+#Param: G = networkx graph
+#Param: root = "top" of the data structure
 def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5):
     '''
     From Joel's answer at https://stackoverflow.com/a/29597209/2966723.
@@ -57,6 +65,31 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
     return _hierarchy_pos(G, root, width, vert_gap, vert_loc, xcenter)
         
 def main():
- #TO-DO
+    #TODO for part 1
+    #read the input file: "input.txt"
+    #will contain structural numbers and names
+    #format: ###.some name
+    #parse the file for the structural numbers
+    #and the names that you will use to make
+    #your own graph
+    #note: you don't have to do this in the
+    #main method
+
+
+    #TODO for part 3
+    #display the graph using networkx and matplotlib
+    #HINT: the activity on directed graphs
+    #may be helpful ;)
+    #note: you don't have to do this in the
+    #main method
+
+    #TODO for part 4
+    #print the file structure in order
+    #beware that the input file may not
+    #be in numerical order.
+    #reminder: the format is ###.some name
+    #hint: use DFS
+    #note: you don't have to do this in the
+    #main method
     
 main()
